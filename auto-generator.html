@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>情书生成器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@300;400;600&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose-50: oklch(0.97 0.02 350);
+      --rose-100: oklch(0.94 0.04 350);
+      --rose-200: oklch(0.89 0.08 350);
+      --rose-300: oklch(0.82 0.12 350);
+      --rose-400: oklch(0.72 0.16 350);
+      --rose-500: oklch(0.62 0.20 350);
+      --rose-600: oklch(0.52 0.22 350);
+      --rose-700: oklch(0.44 0.20 350);
+      
+      --bg-primary: var(--rose-50);
+      --bg-secondary: var(--rose-100);
+      --accent: var(--rose-500);
+      --text-primary: oklch(0.25 0.02 350);
+      --text-secondary: oklch(0.45 0.04 350);
+      
+      --space-2: 0.5rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+      
+      --font-display: 'Cormorant Garamond', 'Noto Serif SC', serif;
+      --font-body: 'Noto Serif SC', serif;
+      --font-script: 'Dancing Script', cursive;
+      
+      --radius-lg: 16px;
+      --duration: 250ms;
+      --ease: cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+      min-height: 100vh;
+      color: var(--text-primary);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-8);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: var(--space-12);
+    }
+
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: var(--space-2);
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .input-section {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      margin-bottom: var(--space-12);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-6);
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+      font-size: 0.9375rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: var(--space-3) var(--space-4);
+      border: 2px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: all var(--duration) var(--ease);
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(190, 80, 100, 0.1);
+    }
+
+    .form-textarea {
+      min-height: 200px;
+      resize: vertical;
+      line-height: 1.8;
+    }
+
+    .form-hint {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      margin-top: var(--space-2);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-6);
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--duration) var(--ease);
+      border: none;
+      font-size: 0.9375rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--rose-400));
+      color: white;
+      box-shadow: 0 4px 12px rgba(190, 80, 100, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(190, 80, 100, 0.3);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--text-primary);
+      border: 2px solid rgba(0,0,0,0.08);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-primary);
+      border-color: var(--accent);
+    }
+
+    /* Preview Section */
+    .preview-section {
+      display: none;
+    }
+
+    .preview-section.visible {
+      display: block;
+    }
+
+    .letter-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: var(--space-12) var(--space-10);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .letter-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 182, 193, 0.08) 0%, transparent 70%);
+      animation: shimmer 4s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(180deg); }
+    }
+
+    .letter-content { position: relative; z-index: 1; }
+
+    .letter-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: var(--space-2);
+      line-height: 1.2;
+    }
+
+    .letter-subtitle {
+      font-family: var(--font-script);
+      font-size: 1.25rem;
+      text-align: center;
+      color: var(--rose-400);
+      margin-bottom: var(--space-8);
+      font-style: italic;
+    }
+
+    .letter-salutation {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: var(--space-6);
+    }
+
+    .letter-body {
+      font-size: 1.0625rem;
+      line-height: 2.2;
+      color: var(--text-primary);
+      text-align: justify;
+    }
+
+    .letter-body p {
+      margin-bottom: var(--space-6);
+      text-indent: 2em;
+    }
+
+    .letter-body p:first-child {
+      text-indent: 0;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 600;
+      position: relative;
+      display: inline-block;
+      padding: 0 2px;
+    }
+
+    .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, transparent, var(--rose-200), transparent);
+      z-index: -1;
+    }
+
+    .letter-footer {
+      margin-top: var(--space-12);
+      text-align: right;
+    }
+
+    .signature {
+      font-family: var(--font-script);
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: var(--space-2);
+    }
+
+    .date {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+    }
+
+    /* Hearts Background */
+    .hearts-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 1.25rem;
+      color: var(--rose-300);
+      opacity: 0;
+      animation: float-up 6s ease-out infinite;
+    }
+
+    @keyframes float-up {
+      0% { opacity: 0; transform: translateY(100vh) rotate(0deg) scale(0.5); }
+      10% { opacity: 0.5; }
+      90% { opacity: 0.5; }
+      100% { opacity: 0; transform: translateY(-10vh) rotate(360deg) scale(1); }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: var(--space-4); }
+      .header h1 { font-size: 1.75rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .letter-card { padding: var(--space-8) var(--space-6); }
+      .letter-title { font-size: 1.75rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts-bg" id="heartsBg"></div>
+
+  <div class="container">
+    <header class="header">
+      <h1>💌 情书生成器</h1>
+      <p>输入内容，一键生成精美情书</p>
+    </header>
+
+    <!-- Input Form -->
+    <section class="input-section">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="title">标题</label>
+          <input type="text" class="form-input" id="title" value="致我最爱的人" placeholder="如：致亲爱的你">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="subtitle">副标题（可选）</label>
+          <input type="text" class="form-input" id="subtitle" value="Every moment with you is magic" placeholder="英文短句或副标题">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="salutation">称呼</label>
+          <input type="text" class="form-input" id="salutation" value="亲爱的，" placeholder="如何称呼 TA">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signature">署名</label>
+          <input type="text" class="form-input" id="signature" value="爱你的" placeholder="如何署名">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="content">情书内容</label>
+        <textarea class="form-textarea" id="content" placeholder="在这里输入情书正文...
+
+每一段之间空一行，系统会自动排版美化。
+
+例如：
+遇见你是我生命中最美好的意外。
+
+我想和你一起走过每一个春夏秋冬。
+
+余生请多指教。"></textarea>
+        <p class="form-hint">💡 小提示：系统会自动高亮"爱"、"喜欢"、"心动"等关键词</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="date">日期</label>
+        <input type="text" class="form-input" id="date" value="2026 年 3 月 18 日" placeholder="日期">
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="generate()">
+          <span>✨</span> 生成情书
+        </button>
+        <button class="btn btn-secondary" onclick="resetForm()">
+          <span>🔄</span> 重置
+        </button>
+        <button class="btn btn-secondary" onclick="loadExample()">
+          <span>📝</span> 载入示例
+        </button>
+      </div>
+    </section>
+
+    <!-- Preview -->
+    <section class="preview-section" id="previewSection">
+      <div class="btn-group" style="justify-content: center; margin-bottom: var(--space-6);">
+        <button class="btn btn-primary" onclick="exportTxt()">
+          <span>📤</span> 导出文本
+        </button>
+        <button class="btn btn-secondary" onclick="printLetter()">
+          <span>🖨️</span> 打印
+        </button>
+        <button class="btn btn-secondary" onclick="scrollToInput()">
+          <span>✏️</span> 返回编辑
+        </button>
+      </div>
+
+      <article class="letter-card">
+        <div class="letter-content">
+          <h1 class="letter-title" id="previewTitle"></h1>
+          <p class="letter-subtitle" id="previewSubtitle"></p>
+          <h2 class="letter-salutation" id="previewSalutation"></h2>
+          <div class="letter-body" id="previewBody"></div>
+          <footer class="letter-footer">
+            <p class="signature" id="previewSignature"></p>
+            <p class="date" id="previewDate"></p>
+          </footer>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    function highlightKeywords(text) {
+      const keywords = ['爱', '喜欢', '心动', '温暖', '美好', '永远', '一起', '世界', '你', '我', '思念', '温柔', '幸福'];
+      let result = text;
+      keywords.forEach(word => {
+        result = result.replace(new RegExp(`(${word})`, 'g'), '<span class="highlight">$1</span>');
+      });
+      return result;
+    }
+
+    function generate() {
+      const title = $('title').value.trim();
+      const subtitle = $('subtitle').value.trim();
+      const salutation = $('salutation').value.trim();
+      const signature = $('signature').value.trim();
+      const date = $('date').value.trim();
+      const content = $('content').value.trim();
+
+      if (!content) {
+        alert('请输入情书内容！');
+        $('content').focus();
+        return;
+      }
+
+      $('previewTitle').textContent = title || '致我最爱的人';
+      $('previewSubtitle').textContent = subtitle;
+      $('previewSalutation').textContent = salutation;
+      $('previewSignature').textContent = signature;
+      $('previewDate').textContent = date;
+
+      const paragraphs = content.split(/\n\s*\n/).filter(p => p.trim());
+      $('previewBody').innerHTML = paragraphs
+        .map(p => `<p>${highlightKeywords(p.trim())}</p>`)
+        .join('');
+
+      $('previewSection').classList.add('visible');
+      $('previewSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetForm() {
+      $('title').value = '致我最爱的人';
+      $('subtitle').value = '';
+      $('salutation').value = '亲爱的，';
+      $('signature').value = '爱你的';
+      $('date').value = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+      $('content').value = '';
+      $('previewSection').classList.remove('visible');
+    }
+
+    function loadExample() {
+      $('content').value = `遇见你是我生命中最美好的意外，从那一刻起，我的世界因为你而变得五彩斑斓。
+
+你的笑容如春日暖阳，温暖了我心中的每一个角落；你的眼睛如星辰大海，让我沉醉其中无法自拔。
+
+我想和你一起走过春夏秋冬，看遍世间繁华；我想和你一起尝遍人生百味，分享每一个喜怒哀乐。
+
+每一个与你相伴的日子，都是我珍藏的宝藏。只要有你在身边，无论何时何地，都是最美的风景。
+
+余生漫长，请多指教。愿我们的爱情，如葡萄酒般，越陈越香。`;
+      
+      $('salutation').value = '亲爱的，';
+      $('signature').value = '永远爱你的';
+    }
+
+    function exportTxt() {
+      const title = $('title').value;
+      const salutation = $('salutation').value;
+      const content = $('content').value;
+      const signature = $('signature').value;
+      const date = $('date').value;
+
+      const text = `${title}\n\n${salutation}\n\n${content}\n\n${signature}\n${date}`;
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${title || '情书'}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function printLetter() {
+      const w = window.open('', '_blank');
+      w.document.write(`
+        <!DOCTYPE html>
+        <html><head><title>${$('title').value}</title>
+        <style>
+          body{font-family:serif;padding:60px;max-width:700px;margin:0 auto;line-height:2}
+          h1{font-family:'Cormorant Garamond',serif;text-align:center;color:#be5064;font-size:2.5rem}
+          .sub{text-align:center;color:#d47486;font-style:italic;font-family:'Dancing Script',cursive}
+          .sal{font-size:1.5rem;color:#be5064;margin:24px 0}
+          p{margin:20px 0;text-indent:2em}p:first-child{text-indent:0}
+          .sig{text-align:right;margin-top:60px}.sig-name{font-size:1.5rem;color:#be5064}
+        </style></head><body>
+        <h1>${$('previewTitle').textContent}</h1>
+        <p class="sub">${$('previewSubtitle').textContent}</p>
+        <p class="sal">${$('previewSalutation').textContent}</p>
+        ${$('previewBody').innerHTML}
+        <div class="sig"><p class="sig-name">${$('previewSignature').textContent}</p><p>${$('previewDate').textContent}</p></div>
+        </body></html>
+      `);
+      w.document.close();
+      setTimeout(() => w.print(), 250);
+    }
+
+    function scrollToInput() {
+      $('title').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function createHearts() {
+      const container = $('heartsBg');
+      const symbols = ['❤️', '💕', '💗', '✨'];
+      for (let i = 0; i < 10; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        container.appendChild(heart);
+      }
+    }
+
+    // Initialize
+    $('date').value = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+    createHearts();
+  </script>
+</body>
+</html>

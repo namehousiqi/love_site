@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>写一封告白信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@300;400;500&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink-50: #fef2f8;
+      --pink-100: #fce7f3;
+      --pink-200: #fbcfe8;
+      --pink-300: #f9a8d4;
+      --pink-400: #f472b6;
+      --pink-500: #ec4899;
+      --pink-600: #db2777;
+      --peach: #fcd5ce;
+      --cream: #fff8f0;
+      --lavender: #f3e8ff;
+      --ink: #4a3640;
+      --ink-light: #8b7080;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --font-zh: 'LXGW WenKai', serif;
+      --font-cute: 'ZCOOL KuaiLe', cursive;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-2xl: 36px;
+      --shadow-soft: 0 8px 32px rgba(236, 72, 153, 0.12);
+      --shadow-glow: 0 0 40px rgba(244, 114, 182, 0.2);
+      --duration: 300ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font-zh);
+      background: linear-gradient(135deg, var(--pink-50) 0%, var(--peach) 50%, var(--lavender) 100%);
+      min-height: 100vh;
+      color: var(--ink);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    .floating-elements {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .heart {
+      position: absolute; font-size: 20px; opacity: 0;
+      animation: float-heart 8s ease-in-out infinite;
+    }
+    @keyframes float-heart {
+      0%, 100% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% { transform: translateY(-20vh) scale(1) rotate(20deg); opacity: 0; }
+    }
+    .star {
+      position: absolute; font-size: 16px; opacity: 0;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+    .container {
+      max-width: 800px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg);
+      position: relative; z-index: 1;
+    }
+    .header {
+      text-align: center; margin-bottom: var(--space-2xl); padding: var(--space-xl) 0;
+    }
+    .header-title {
+      font-family: var(--font-cute);
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: var(--space-sm);
+      letter-spacing: 0.05em;
+    }
+    .header-subtitle {
+      font-family: var(--font-zh);
+      font-size: 1rem;
+      color: var(--ink-light);
+      letter-spacing: 0.15em;
+    }
+    .editor-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,248,240,0.95));
+      border-radius: var(--radius-2xl);
+      padding: var(--space-2xl);
+      box-shadow: var(--shadow-soft), var(--shadow-glow);
+      border: 2px solid rgba(244, 114, 182, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .editor-card::before {
+      content: '💕';
+      position: absolute; top: 20px; right: 25px;
+      font-size: 1.5rem; opacity: 0.3;
+    }
+    .section-title {
+      font-family: var(--font-cute);
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, var(--pink-500), var(--pink-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+    .form-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg); margin-bottom: var(--space-xl);
+    }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group.full-width { grid-column: 1 / -1; }
+    .form-label {
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--pink-600); margin-bottom: var(--space-sm);
+    }
+    .form-input, .form-textarea {
+      padding: var(--space-md);
+      border: 2px solid var(--pink-100);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-zh); font-size: 1rem;
+      background: white;
+      transition: all var(--duration);
+      color: var(--ink);
+    }
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--pink-300);
+      box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.15), var(--shadow-soft);
+    }
+    .form-textarea { min-height: 260px; resize: vertical; line-height: 2; }
+    .btn-group {
+      display: flex; flex-wrap: wrap; gap: var(--space-md);
+      justify-content: center; margin-top: var(--space-xl);
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: var(--space-sm); padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-xl);
+      font-family: var(--font-zh); font-size: 1rem; font-weight: 500;
+      cursor: pointer; transition: all var(--duration); border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink-400), var(--pink-500));
+      color: white;
+      box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(236, 72, 153, 0.5);
+    }
+    .btn-secondary {
+      background: white; color: var(--pink-500);
+      border: 2px solid var(--pink-200);
+    }
+    .btn-secondary:hover {
+      background: var(--pink-50); border-color: var(--pink-300);
+      transform: translateY(-2px);
+    }
+    .tips {
+      text-align: center; margin-top: var(--space-xl);
+      padding: var(--space-lg);
+      background: linear-gradient(135deg, var(--pink-50), var(--lavender));
+      border-radius: var(--radius-lg);
+      font-size: 0.9rem; color: var(--ink-light);
+    }
+    .tips strong { color: var(--pink-500); }
+    @media (max-width: 768px) {
+      .container { padding: var(--space-lg) var(--space-md); }
+      .editor-card { padding: var(--space-xl) var(--space-lg); }
+      .form-grid { grid-template-columns: 1fr; }
+      .btn { width: 100%; justify-content: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-elements" id="floatingElements"></div>
+  <div class="container">
+    <header class="header">
+      <h1 class="header-title">💌 写一封告白信</h1>
+      <p class="header-subtitle">把藏在心底的话，温柔地说出来</p>
+    </header>
+    <section class="editor-card">
+      <h2 class="section-title">写下你的心意 ✨</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="title">给TA的称呼</label>
+          <input type="text" class="form-input" id="title" value="亲爱的" placeholder="如：亲爱的、宝贝、xx">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="subtitle">一句话告白</label>
+          <input type="text" class="form-input" id="subtitle" value="我喜欢你" placeholder="最想说的一句话">
+        </div>
+        <div class="form-group full-width">
+          <label class="form-label" for="content">想说的话</label>
+          <textarea class="form-textarea" id="content" placeholder="写下你想对TA说的话...&#10;&#10;比如：&#10;第一次见到你的时候，我的心跳漏了一拍。&#10;&#10;从那以后，你就住进了我的心里，再也没有离开过。"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signature">署名</label>
+          <input type="text" class="form-input" id="signature" value="喜欢你的" placeholder="如：喜欢你的、爱你的">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signatureName">你的名字</label>
+          <input type="text" class="form-input" id="signatureName" value="[你的名字]" placeholder="你的名字或昵称">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">🔐 访问密码 <span style="font-weight:400;color:var(--ink-light);">(可选，留空则无需密码)</span></label>
+          <input type="password" class="form-input" id="password" placeholder="设置密码保护这封信">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="generate()">
+          💝 生成告白信
+        </button>
+        <button class="btn btn-secondary" onclick="resetForm()">
+          🔄 重新写
+        </button>
+      </div>
+      <div class="tips">
+        <strong>小贴士：</strong>真诚的话语最动人，写出你内心真实的感受吧 💕
+      </div>
+    </section>
+  </div>
+  <script>
+    const $ = id => document.getElementById(id);
+    async function generate() {
+      const data = {
+        title: $('title').value.trim() || '亲爱的',
+        subtitle: $('subtitle').value.trim() || '我喜欢你',
+        content: $('content').value.trim(),
+        signature: $('signature').value.trim() || '喜欢你的',
+        signatureName: $('signatureName').value.trim(),
+        password: $('password').value.trim()
+      };
+      if (!data.content) {
+        $('content').focus();
+        return;
+      }
+      try {
+        const res = await fetch('/api/letter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.success && result.id) {
+          window.location.href = 'view.html?id=' + result.id;
+        } else {
+          alert(result.error || '创建失败，请重试');
+        }
+      } catch (e) {
+        alert('网络错误，请重试');
+      }
+    }
+    function resetForm() {
+      $('title').value = '亲爱的';
+      $('subtitle').value = '我喜欢你';
+      $('signature').value = '喜欢你的';
+      $('signatureName').value = '[你的名字]';
+      $('password').value = '';
+      $('content').value = '';
+      $('title').focus();
+    }
+    function createFloatingElements() {
+      const container = $('floatingElements');
+      const hearts = ['💗', '💕', '💖', '💝', '💓'];
+      const stars = ['✨', '⭐', '🌟'];
+      for (let i = 0; i < 8; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+        container.appendChild(heart);
+      }
+      for (let i = 0; i < 12; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.textContent = stars[Math.floor(Math.random() * stars.length)];
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(star);
+      }
+    }
+    createFloatingElements();
+  </script>
+</body>
+</html>

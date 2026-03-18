@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>致我最爱的人</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@300;400;600&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Layer 1: Primitive Color Tokens ===== */
+    :root {
+      /* Warm romantic palette - OKLCH for perceptual uniformity */
+      --rose-50: oklch(0.97 0.02 350);
+      --rose-100: oklch(0.94 0.04 350);
+      --rose-200: oklch(0.89 0.08 350);
+      --rose-300: oklch(0.82 0.12 350);
+      --rose-400: oklch(0.72 0.16 350);
+      --rose-500: oklch(0.62 0.20 350);
+      --rose-600: oklch(0.52 0.22 350);
+      --rose-700: oklch(0.44 0.20 350);
+      --rose-800: oklch(0.38 0.18 350);
+      --rose-900: oklch(0.33 0.15 350);
+      
+      --cream-50: oklch(0.98 0.01 85);
+      --cream-100: oklch(0.96 0.015 85);
+      --cream-200: oklch(0.93 0.02 85);
+      
+      --gold-200: oklch(0.92 0.04 85);
+      --gold-400: oklch(0.78 0.08 85);
+      --gold-600: oklch(0.65 0.12 85);
+      
+      --text-primary: oklch(0.25 0.02 350);
+      --text-secondary: oklch(0.45 0.04 350);
+      --text-muted: oklch(0.60 0.05 350);
+      
+      /* Spacing Scale - 8px base unit */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      
+      /* Typography */
+      --font-display: 'Cormorant Garamond', 'Noto Serif SC', serif;
+      --font-body: 'Noto Serif SC', serif;
+      --font-script: 'Dancing Script', cursive;
+      
+      /* Fluid Type Scale - Major Third (1.25) */
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+      --text-base: clamp(1rem, 0.925rem + 0.375vw, 1.125rem);
+      --text-lg: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.563rem, 1.35rem + 1.063vw, 1.875rem);
+      --text-2xl: clamp(1.953rem, 1.65rem + 1.5vw, 2.5rem);
+      --text-3xl: clamp(2.441rem, 2rem + 2vw, 3.5rem);
+      --text-4xl: clamp(3.052rem, 2.5rem + 2.75vw, 4.5rem);
+      
+      /* Elevation */
+      --radius-sm: 0.375rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1.5rem;
+      --radius-xl: 2.5rem;
+      --radius-full: 9999px;
+      
+      /* Transitions */
+      --duration-fast: 150ms;
+      --duration-normal: 250ms;
+      --duration-slow: 400ms;
+      --duration-slower: 600ms;
+      --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    /* ===== Base Reset & Foundations ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.7;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, var(--rose-50) 0%, var(--cream-100) 50%, var(--rose-100) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== Floating Hearts Background Animation ===== */
+    .hearts-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: var(--text-xl);
+      color: var(--rose-300);
+      opacity: 0;
+      animation: float-up var(--duration-slower) var(--ease-out) infinite;
+    }
+
+    @keyframes float-up {
+      0% {
+        opacity: 0;
+        transform: translateY(100vh) rotate(0deg) scale(0.5);
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-10vh) rotate(360deg) scale(1);
+      }
+    }
+
+    /* ===== Main Container ===== */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-4);
+    }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      text-align: center;
+      padding: var(--space-20) 0 var(--space-12);
+      animation: fade-in var(--duration-slower) var(--ease-out);
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(2rem);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: 600;
+      color: var(--rose-700);
+      line-height: 1.2;
+      margin-bottom: var(--space-6);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-script);
+      font-size: var(--text-2xl);
+      color: var(--rose-500);
+      font-style: italic;
+    }
+
+    /* ===== Envelope Card ===== */
+    .envelope-card {
+      background: linear-gradient(145deg, var(--cream-50), var(--rose-50));
+      border-radius: var(--radius-lg);
+      padding: var(--space-12) var(--space-8);
+      box-shadow: 
+        0 4px 6px rgba(190, 80, 100, 0.05),
+        0 10px 40px rgba(190, 80, 100, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: var(--space-12);
+      border: 1px solid var(--rose-100);
+    }
+
+    .envelope-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 182, 193, 0.1) 0%, transparent 70%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(180deg); }
+    }
+
+    /* ===== Love Letter Content ===== */
+    .letter-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .letter-header {
+      text-align: center;
+      margin-bottom: var(--space-8);
+    }
+
+    .letter-salutation {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--rose-700);
+      margin-bottom: var(--space-6);
+    }
+
+    .letter-body {
+      font-size: var(--text-lg);
+      line-height: 2;
+      color: var(--text-primary);
+      text-align: justify;
+    }
+
+    .letter-body p {
+      margin-bottom: var(--space-6);
+      text-indent: 2em;
+    }
+
+    .letter-body p:first-child {
+      text-indent: 0;
+    }
+
+    .highlight {
+      color: var(--rose-600);
+      font-weight: 600;
+      position: relative;
+      display: inline-block;
+    }
+
+    .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, transparent, var(--rose-200), transparent);
+      z-index: -1;
+    }
+
+    /* ===== Interactive Heart Button ===== */
+    .heart-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      background: linear-gradient(135deg, var(--rose-400), var(--rose-500));
+      color: white;
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 600;
+      padding: var(--space-4) var(--space-8);
+      border-radius: var(--radius-full);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(190, 80, 100, 0.3);
+      transition: all var(--duration-normal) var(--ease-out);
+      margin: var(--space-8) auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .heart-button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--rose-500), var(--rose-600));
+      opacity: 0;
+      transition: opacity var(--duration-normal) var(--ease-out);
+    }
+
+    .heart-button:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(190, 80, 100, 0.4);
+    }
+
+    .heart-button:hover::before {
+      opacity: 1;
+    }
+
+    .heart-button:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .heart-button span {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .heart-icon {
+      font-size: var(--text-xl);
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      10% { transform: scale(1.15); }
+      20% { transform: scale(1); }
+      30% { transform: scale(1.15); }
+      40%, 100% { transform: scale(1); }
+    }
+
+    /* ===== Message Reveal Section ===== */
+    .message-reveal {
+      background: linear-gradient(145deg, var(--rose-50), var(--cream-100));
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+      margin-top: var(--space-8);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: all var(--duration-slow) var(--ease-out);
+      border: 1px dashed var(--rose-300);
+    }
+
+    .message-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-title {
+      font-family: var(--font-script);
+      font-size: var(--text-xl);
+      color: var(--rose-600);
+      margin-bottom: var(--space-4);
+    }
+
+    .reveal-message {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-style: italic;
+    }
+
+    /* ===== Photo Gallery Section ===== */
+    .gallery-section {
+      padding: var(--space-12) 0;
+    }
+
+    .gallery-title {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      text-align: center;
+      color: var(--rose-700);
+      margin-bottom: var(--space-8);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+      gap: var(--space-4);
+    }
+
+    .gallery-item {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--rose-100), var(--cream-200));
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform var(--duration-normal) var(--ease-out);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05) rotate(1deg);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .gallery-item:nth-child(even):hover {
+      transform: scale(1.05) rotate(-1deg);
+    }
+
+    .gallery-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-3xl);
+      background: linear-gradient(135deg, var(--rose-200), var(--rose-300));
+    }
+
+    /* ===== Timeline Section ===== */
+    .timeline-section {
+      padding: var(--space-12) 0;
+    }
+
+    .timeline-title {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      text-align: center;
+      color: var(--rose-700);
+      margin-bottom: var(--space-12);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: var(--space-12);
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: var(--space-6);
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--rose-300), var(--rose-500));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: var(--space-8);
+      animation: slide-in var(--duration-slower) var(--ease-out) both;
+    }
+
+    .timeline-item:nth-child(1) { animation-delay: 0ms; }
+    .timeline-item:nth-child(2) { animation-delay: 150ms; }
+    .timeline-item:nth-child(3) { animation-delay: 300ms; }
+    .timeline-item:nth-child(4) { animation-delay: 450ms; }
+
+    @keyframes slide-in {
+      from {
+        opacity: 0;
+        transform: translateX(-2rem);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: calc(var(--space-6) - 8px);
+      top: var(--space-2);
+      width: 16px;
+      height: 16px;
+      background: var(--rose-500);
+      border-radius: 50%;
+      border: 3px solid var(--cream-50);
+      box-shadow: 0 0 0 3px var(--rose-200);
+    }
+
+    .timeline-date {
+      font-family: var(--font-script);
+      font-size: var(--text-lg);
+      color: var(--rose-600);
+      margin-bottom: var(--space-2);
+    }
+
+    .timeline-content {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      text-align: center;
+      padding: var(--space-12) 0 var(--space-8);
+      color: var(--text-muted);
+    }
+
+    .footer-signature {
+      font-family: var(--font-script);
+      font-size: var(--text-2xl);
+      color: var(--rose-600);
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-date {
+      font-size: var(--text-sm);
+    }
+
+    /* ===== Responsive Design ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: var(--space-4) var(--space-3);
+      }
+
+      .hero {
+        padding: var(--space-12) 0 var(--space-8);
+      }
+
+      .hero-title {
+        font-size: var(--text-3xl);
+      }
+
+      .envelope-card {
+        padding: var(--space-8) var(--space-4);
+      }
+
+      .letter-body {
+        font-size: var(--text-base);
+      }
+
+      .heart-button {
+        width: 100%;
+        padding: var(--space-3) var(--space-6);
+      }
+
+      .timeline {
+        padding-left: var(--space-8);
+      }
+
+      .timeline::before {
+        left: var(--space-4);
+      }
+
+      .timeline-dot {
+        left: calc(var(--space-4) - 8px);
+      }
+    }
+
+    /* Focus indicators for accessibility */
+    :focus-visible {
+      outline: 2px solid var(--rose-500);
+      outline-offset: 2px;
+    }
+
+    .heart-button:focus-visible {
+      outline: 3px solid var(--rose-300);
+      outline-offset: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Hearts Background -->
+  <div class="hearts-bg" id="heartsBg" aria-hidden="true"></div>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1 class="hero-title">致我最爱的人</h1>
+      <p class="hero-subtitle">Every moment with you is magic</p>
+    </section>
+
+    <!-- Love Letter Card -->
+    <article class="envelope-card">
+      <div class="letter-content">
+        <header class="letter-header">
+          <h2 class="letter-salutation">亲爱的，</h2>
+        </header>
+        
+        <div class="letter-body">
+          <p>
+            在这个特别的日子里，我想用最真诚的文字，向你诉说我心中最深的情感。
+          </p>
+          <p>
+            遇见你是我生命中最美好的意外。从那一刻起，我的世界因为你而变得<span class="highlight">五彩斑斓</span>。你的笑容如春日暖阳，温暖了我心中的每一个角落；你的眼睛如星辰大海，让我沉醉其中无法自拔。
+          </p>
+          <p>
+            记得我们第一次牵手的那个傍晚吗？微风轻拂，晚霞漫天，时间仿佛为我们而停止。从那一刻起，我就知道，<span class="highlight">你就是我想要共度一生的人</span>。
+          </p>
+          <p>
+            每一个与你相伴的日子，都是我珍藏的宝藏。无论是清晨的第一缕阳光，还是夜晚的点点星光，只要有你在身边，都是最美的风景。
+          </p>
+          <p>
+            我想和你一起走过春夏秋冬，看遍世间繁华；我想和你一起尝遍人生百味，分享每一个喜怒哀乐；我想牵着你的手，从青丝走到白发，直到地老天荒。
+          </p>
+          <p>
+            <span class="highlight">我爱你</span>，不仅因为你的模样，更因为和你在一起时，我的模样——那是最好的我。
+          </p>
+        </div>
+
+        <button class="heart-button" id="revealBtn" type="button">
+          <span>
+            <span class="heart-icon">❤️</span>
+            点击接收我的心意
+          </span>
+        </button>
+
+        <div class="message-reveal" id="messageReveal">
+          <h3 class="reveal-title">💌 专属情话</h3>
+          <p class="reveal-message">
+            "如果爱有形状，那一定是你的模样。<br>
+            如果思念有声音，恐怕你早已震耳欲聋。<br>
+            余生漫长，请多指教。"
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Photo Gallery -->
+    <section class="gallery-section">
+      <h2 class="gallery-title">我们的美好时光</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <div class="gallery-placeholder">📸</div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-placeholder">💕</div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-placeholder">🌹</div>
+        </div>
+        <div class="gallery-item">
+          <div class="gallery-placeholder">✨</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+      <h2 class="timeline-title">我们的爱情时间线</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">初见</div>
+          <div class="timeline-content">
+            那个阳光明媚的日子，你微笑着向我走来，那一刻，时间仿佛静止了。
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">相知</div>
+          <div class="timeline-content">
+            渐渐地，我们分享了彼此的故事、梦想和秘密，心与心的距离越来越近。
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">相守</div>
+          <div class="timeline-content">
+            从今往后，无论风雨还是晴天，我们都将携手同行，共同书写属于我们的故事。
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">永恒</div>
+          <div class="timeline-content">
+            执子之手，与子偕老。愿我们的爱情，如葡萄酒般，越陈越香。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-signature">永远爱你的</p>
+      <p class="footer-date">2026 年 3 月 18 日</p>
+    </footer>
+  </main>
+
+  <script>
+    // ===== Floating Hearts Animation =====
+    function createHearts() {
+      const container = document.getElementById('heartsBg');
+      const heartSymbols = ['❤️', '💕', '💗', '💖', '✨', '🌹'];
+      
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+        container.appendChild(heart);
+      }
+    }
+
+    // ===== Reveal Message Interaction =====
+    function setupRevealButton() {
+      const btn = document.getElementById('revealBtn');
+      const reveal = document.getElementById('messageReveal');
+      
+      btn.addEventListener('click', () => {
+        reveal.classList.add('visible');
+        btn.style.display = 'none';
+        createHeartBurst();
+      });
+    }
+
+    // ===== Heart Burst Effect =====
+    function createHeartBurst() {
+      const burstContainer = document.createElement('div');
+      burstContainer.style.cssText = `
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      `;
+      
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.textContent = ['❤️', '💕', '💗', '💖'][Math.floor(Math.random() * 4)];
+        heart.style.cssText = `
+          position: absolute;
+          font-size: ${20 + Math.random() * 20}px;
+          animation: burst ${1 + Math.random()}s ease-out forwards;
+        `;
+        
+        const angle = (i / 20) * 360;
+        const distance = 100 + Math.random() * 150;
+        const x = Math.cos(angle * Math.PI / 180) * distance;
+        const y = Math.sin(angle * Math.PI / 180) * distance;
+        
+        heart.style.setProperty('--tx', x + 'px');
+        heart.style.setProperty('--ty', y + 'px');
+        burstContainer.appendChild(heart);
+      }
+      
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes burst {
+          to {
+            transform: translate(var(--tx), var(--ty)) scale(0);
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+      document.body.appendChild(burstContainer);
+      
+      setTimeout(() => {
+        burstContainer.remove();
+        style.remove();
+      }, 2000);
+    }
+
+    // ===== Scroll-triggered Animations =====
+    function setupScrollAnimations() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.timeline-item, .gallery-item').forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(2rem)';
+        item.style.transition = 'all 0.6s cubic-bezier(0.33, 1, 0.68, 1)';
+        observer.observe(item);
+      });
+    }
+
+    // ===== Initialize =====
+    document.addEventListener('DOMContentLoaded', () => {
+      createHearts();
+      setupRevealButton();
+      setupScrollAnimations();
+    });
+  </script>
+</body>
+</html>

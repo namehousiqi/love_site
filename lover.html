@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>情书 · Letter of Love</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cherry-50: #fef7f9;
+      --cherry-100: #fdeef2;
+      --cherry-200: #fad5e0;
+      --cherry-300: #f5b5c8;
+      --cherry-400: #ec8ba6;
+      --cherry-500: #e05f7f;
+      --cherry-600: #c8415f;
+      --cherry-700: #a8324e;
+      
+      --cream: #fffef9;
+      --gold: #c9a962;
+      --gold-light: #dcc088;
+      
+      --ink: #2d2a26;
+      --ink-light: #5a5550;
+      --ink-muted: #8a8480;
+      
+      --paper: #fffbf5;
+      
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --space-3xl: 4rem;
+      
+      --font-zh: 'Noto Serif SC', serif;
+      --font-en: 'Playfair Display', serif;
+      --font-script: 'Great Vibes', cursive;
+      --font-calligraphy: 'Ma Shan Zheng', cursive;
+      
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+      --shadow-xl: 0 16px 64px rgba(0,0,0,0.16);
+      
+      --duration: 300ms;
+      --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-zh);
+      background: linear-gradient(180deg, var(--cherry-50) 0%, var(--cherry-100) 50%, var(--cherry-50) 100%);
+      min-height: 100vh;
+      color: var(--ink);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Floating Petals Background */
+    .petals-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: linear-gradient(135deg, var(--cherry-200), var(--cherry-300));
+      border-radius: 12px 0 12px 0;
+      opacity: 0.6;
+      animation: petal-fall linear infinite;
+    }
+
+    @keyframes petal-fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    .container {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--space-lg);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: var(--space-3xl);
+      padding: var(--space-2xl) 0;
+    }
+
+    .header-title {
+      font-family: var(--font-calligraphy);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--cherry-700);
+      margin-bottom: var(--space-sm);
+      letter-spacing: 0.1em;
+    }
+
+    .header-subtitle {
+      font-family: var(--font-en);
+      font-size: 1.125rem;
+      color: var(--cherry-500);
+      font-style: italic;
+      letter-spacing: 0.2em;
+    }
+
+    .header-decorator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-md);
+      margin-top: var(--space-lg);
+      color: var(--cherry-300);
+    }
+
+    /* Editor Section */
+    .editor-section {
+      background: var(--cream);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      box-shadow: var(--shadow-lg);
+      margin-bottom: var(--space-3xl);
+      border: 1px solid rgba(236, 139, 166, 0.15);
+    }
+
+    .section-title {
+      font-family: var(--font-en);
+      font-size: 1.5rem;
+      color: var(--cherry-600);
+      text-align: center;
+      margin-bottom: var(--space-xl);
+      padding-bottom: var(--space-md);
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cherry-400), transparent);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .form-group { display: flex; flex-direction: column; }
+    .form-group.full-width { grid-column: 1 / -1; }
+
+    .form-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+
+    .form-input, .form-textarea {
+      padding: var(--space-md);
+      border: 2px solid var(--cherry-100);
+      border-radius: var(--radius-md);
+      font-family: var(--font-zh);
+      font-size: 1rem;
+      background: white;
+      transition: all var(--duration) var(--ease-out);
+      color: var(--ink);
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--cherry-400);
+      box-shadow: 0 0 0 4px rgba(236, 139, 166, 0.15);
+    }
+
+    .form-textarea {
+      min-height: 240px;
+      resize: vertical;
+      line-height: 2;
+    }
+
+    .form-hint {
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      margin-top: var(--space-xs);
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      justify-content: center;
+      margin-top: var(--space-xl);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-zh);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--duration) var(--ease-out);
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cherry-500), var(--cherry-600));
+      color: white;
+      box-shadow: 0 4px 16px rgba(224, 95, 127, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(224, 95, 127, 0.45);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--cherry-600);
+      border: 2px solid var(--cherry-200);
+    }
+
+    .btn-secondary:hover {
+      background: var(--cherry-50);
+      border-color: var(--cherry-400);
+    }
+
+    /* Preview Section */
+    .preview-section {
+      display: none;
+      animation: fade-in var(--duration) var(--ease-out);
+    }
+
+    .preview-section.visible { display: block; }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .preview-actions {
+      text-align: center;
+      margin-bottom: var(--space-2xl);
+    }
+
+    /* Letter Card */
+    .letter-wrapper {
+      perspective: 1000px;
+      margin: var(--space-2xl) auto;
+      max-width: 720px;
+    }
+
+    .letter-card {
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      padding: var(--space-3xl) var(--space-2xl);
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      border: 1px solid rgba(201, 169, 98, 0.2);
+    }
+
+    .letter-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, 
+        var(--cherry-200) 0%, 
+        var(--cherry-400) 20%, 
+        var(--gold) 50%, 
+        var(--cherry-400) 80%, 
+        var(--cherry-200) 100%);
+    }
+
+    .letter-content { position: relative; z-index: 1; }
+
+    /* Letter Header */
+    .letter-header {
+      text-align: center;
+      margin-bottom: var(--space-2xl);
+      padding-bottom: var(--space-xl);
+      border-bottom: 2px solid var(--cherry-100);
+    }
+
+    .letter-title {
+      font-family: var(--font-calligraphy);
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--cherry-700);
+      margin-bottom: var(--space-sm);
+      letter-spacing: 0.15em;
+    }
+
+    .letter-subtitle {
+      font-family: var(--font-script);
+      font-size: 1.5rem;
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    /* Letter Body */
+    .letter-salutation {
+      font-size: 1.25rem;
+      color: var(--cherry-600);
+      margin-bottom: var(--space-xl);
+      font-weight: 500;
+    }
+
+    .letter-body {
+      font-size: 1.0625rem;
+      line-height: 2.4;
+      color: var(--ink);
+      text-align: justify;
+    }
+
+    .letter-body p {
+      margin-bottom: var(--space-lg);
+      text-indent: 2em;
+    }
+
+    .letter-body p:first-child { text-indent: 0; }
+
+    /* Highlight Effect */
+    .highlight {
+      color: var(--cherry-600);
+      font-weight: 600;
+      position: relative;
+      display: inline-block;
+      padding: 0 2px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(180deg, transparent 60%, var(--cherry-100) 60%);
+      transition: all var(--duration) var(--ease-out);
+    }
+
+    .highlight:hover {
+      background: linear-gradient(180deg, transparent 40%, var(--cherry-200) 40%);
+      transform: scale(1.05);
+    }
+
+    /* Letter Footer */
+    .letter-footer {
+      margin-top: var(--space-2xl);
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--cherry-100);
+      text-align: right;
+    }
+
+    .signature {
+      font-family: var(--font-calligraphy);
+      font-size: 1.75rem;
+      color: var(--cherry-600);
+      letter-spacing: 0.1em;
+    }
+
+    .date {
+      font-size: 0.9375rem;
+      color: var(--ink-muted);
+      font-family: var(--font-en);
+      font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { padding: var(--space-lg) var(--space-md); }
+      .editor-section { padding: var(--space-xl) var(--space-lg); }
+      .form-grid { grid-template-columns: 1fr; }
+      .letter-card { padding: var(--space-xl) var(--space-lg); }
+      .btn { width: 100%; justify-content: center; }
+    }
+
+    /* Print */
+    @media print {
+      .petals-bg, .editor-section, .header { display: none !important; }
+      body { background: white; }
+      .letter-card { box-shadow: none; border: none; }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="petals-bg" id="petalsBg"></div>
+
+  <div class="container">
+    <header class="header">
+      <h1 class="header-title">情书</h1>
+      <p class="header-subtitle">Letter of Love</p>
+      <div class="header-decorator">🌸</div>
+    </header>
+
+    <!-- Editor -->
+    <section class="editor-section">
+      <h2 class="section-title">书写你的心意</h2>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="title">标题</label>
+          <input type="text" class="form-input" id="title" value="致吾爱" placeholder="输入标题">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="subtitle">副标题</label>
+          <input type="text" class="form-input" id="subtitle" value="Forever and Always" placeholder="英文短句">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="salutation">称呼</label>
+          <input type="text" class="form-input" id="salutation" value="亲爱的：" placeholder="如何称呼 TA">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="date">日期</label>
+          <input type="text" class="form-input" id="date" value="" placeholder="日期">
+        </div>
+        <div class="form-group full-width">
+          <label class="form-label" for="content">情书正文</label>
+          <textarea class="form-textarea" id="content" placeholder="在此输入你的心里话...
+
+每一段之间空一行，系统会自动排版。"></textarea>
+          <p class="form-hint">💡 系统会自动高亮关键词</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signature">署名</label>
+          <input type="text" class="form-input" id="signature" value="爱你的" placeholder="如何署名">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signatureName">署名姓名</label>
+          <input type="text" class="form-input" id="signatureName" value="[你的名字]" placeholder="你的姓名">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="generate()">
+          <span>✨</span> 生成情书
+        </button>
+        <button class="btn btn-secondary" onclick="resetForm()">
+          <span>🔄</span> 重置
+        </button>
+        <button class="btn btn-secondary" onclick="loadExample()">
+          <span>📜</span> 载入示例
+        </button>
+      </div>
+    </section>
+
+    <!-- Preview -->
+    <section class="preview-section" id="previewSection">
+      <div class="preview-actions btn-group">
+        <button class="btn btn-primary" onclick="exportTxt()">
+          <span>📤</span> 导出文本
+        </button>
+        <button class="btn btn-secondary" onclick="printLetter()">
+          <span>🖨️</span> 打印
+        </button>
+        <button class="btn btn-secondary" onclick="scrollToEditor()">
+          <span>✏️</span> 返回编辑
+        </button>
+      </div>
+
+      <div class="letter-wrapper">
+        <article class="letter-card">
+          <div class="letter-content">
+            <header class="letter-header">
+              <h1 class="letter-title" id="previewTitle"></h1>
+              <p class="letter-subtitle" id="previewSubtitle"></p>
+            </header>
+
+            <h2 class="letter-salutation" id="previewSalutation"></h2>
+
+            <div class="letter-body" id="previewBody"></div>
+
+            <footer class="letter-footer">
+              <p class="signature" id="previewSignature"></p>
+              <p class="date" id="previewDate"></p>
+            </footer>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    const loveKeywords = [
+      '爱', '喜欢', '心动', '想念', '思念', '温柔', '温暖',
+      '美好', '永远', '一起', '世界', '你', '我', '我们',
+      '幸福', '甜蜜', '浪漫', '珍贵', '唯一', '笑容', '眼睛',
+      '心跳', '拥抱', '陪伴', '守护', '珍惜', '阳光', '星空'
+    ];
+
+    function highlightKeywords(text) {
+      let result = text;
+      [...loveKeywords].sort((a, b) => b.length - a.length).forEach(word => {
+        result = result.replace(new RegExp(`(${word})`, 'g'), '<span class="highlight">$1</span>');
+      });
+      return result;
+    }
+
+    function generate() {
+      const title = $('title').value.trim();
+      const subtitle = $('subtitle').value.trim();
+      const salutation = $('salutation').value.trim();
+      const signature = $('signature').value.trim();
+      const signatureName = $('signatureName').value.trim();
+      const date = $('date').value.trim();
+      const content = $('content').value.trim();
+
+      if (!content) {
+        $('content').focus();
+        return;
+      }
+
+      $('previewTitle').textContent = title || '致吾爱';
+      $('previewSubtitle').textContent = subtitle;
+      $('previewSalutation').textContent = salutation;
+      $('previewSignature').textContent = signature + (signatureName ? ' · ' + signatureName : '');
+      $('previewDate').textContent = date;
+
+      const paragraphs = content.split(/\n\s*\n/).filter(p => p.trim());
+      $('previewBody').innerHTML = paragraphs
+        .map(p => `<p>${highlightKeywords(p.trim())}</p>`)
+        .join('');
+
+      $('previewSection').classList.add('visible');
+      $('previewSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetForm() {
+      $('title').value = '致吾爱';
+      $('subtitle').value = 'Forever and Always';
+      $('salutation').value = '亲爱的：';
+      $('signature').value = '爱你的';
+      $('signatureName').value = '[你的名字]';
+      $('content').value = '';
+      $('previewSection').classList.remove('visible');
+      $('title').focus();
+    }
+
+    function loadExample() {
+      $('title').value = '致我最珍贵的你';
+      $('subtitle').value = 'You Are My Everything';
+      $('salutation').value = '我最亲爱的：';
+      $('signature').value = '永远爱你的';
+      $('signatureName').value = '[你的名字]';
+      
+      $('content').value = `遇见你是我生命中最美丽的意外，从那一刻起，我的世界因为你而变得完整。
+
+你的笑容如春日暖阳，温暖了我心中每一个角落；你的眼睛如璀璨星辰，让我沉醉其中无法自拔。
+
+我想和你一起走过春夏秋冬，看遍世间所有的美好风景；我想和你一起品尝人生的酸甜苦辣，分享每一个平凡却珍贵的瞬间。
+
+谢谢你出现在我的生命里，让我懂得了什么是真正的爱。这份感情如陈年美酒，越品越香醇。
+
+余生漫长，请多指教。愿我们的爱情，历经岁月洗礼，依然如初般美好。`;
+
+      const today = new Date();
+      $('date').value = `${today.getFullYear()}年${today.toLocaleString('zh-CN', { month: 'long' })}${today.getDate()}日`;
+      
+      $('content').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function exportTxt() {
+      const text = `${$('title').value}
+
+$('salutation').value}
+
+$('content').value}
+
+${$('signature').value}${$('signatureName').value ? ' · ' + $('signatureName').value : ''}
+${$('date').value}`;
+
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${$('title').value || '情书'}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function printLetter() {
+      const w = window.open('', '_blank');
+      w.document.write(`
+        <!DOCTYPE html>
+        <html><head><meta charset="UTF-8"><title>${$('previewTitle').textContent}</title>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+        <style>
+          @page { margin: 2.5cm; }
+          body { font-family: 'Noto Serif SC', serif; line-height: 2.2; max-width: 210mm; margin: 0 auto; padding: 40px; }
+          .title { font-family: 'Ma Shan Zheng', cursive; font-size: 36px; text-align: center; color: #c8415f; }
+          .subtitle { text-align: center; color: #c9a962; font-style: italic; margin-bottom: 40px; }
+          .salutation { font-size: 18px; color: #c8415f; margin-bottom: 30px; }
+          p { margin-bottom: 20px; text-indent: 2em; text-align: justify; }
+          p:first-child { text-indent: 0; }
+          .signature { text-align: right; margin-top: 60px; font-family: 'Ma Shan Zheng', cursive; font-size: 24px; color: #c8415f; }
+          .date { text-align: right; font-size: 14px; color: #8a8480; font-style: italic; }
+        </style></head>
+        <body>
+          <h1 class="title">${$('previewTitle').textContent}</h1>
+          <p class="subtitle">${$('previewSubtitle').textContent}</p>
+          <p class="salutation">${$('previewSalutation').textContent}</p>
+          ${$('previewBody').innerHTML.replace(/<span class="highlight">/g, '<strong>').replace(/<\/span>/g, '</strong>')}
+          <p class="signature">${$('previewSignature').textContent}</p>
+          <p class="date">${$('previewDate').textContent}</p>
+        </body></html>
+      `);
+      w.document.close();
+      setTimeout(() => w.print(), 500);
+    }
+
+    function scrollToEditor() {
+      $('title').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function createPetals() {
+      const container = $('petalsBg');
+      for (let i = 0; i < 15; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.animationDelay = Math.random() * 10 + 's';
+        petal.style.animationDuration = (8 + Math.random() * 6) + 's';
+        container.appendChild(petal);
+      }
+    }
+
+    // Initialize
+    const today = new Date();
+    $('date').value = `${today.getFullYear()}年${today.toLocaleString('zh-CN', { month: 'long' })}${today.getDate()}日`;
+    createPetals();
+  </script>
+</body>
+</html>
