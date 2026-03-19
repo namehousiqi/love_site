@@ -111,11 +111,34 @@ love_site/
 
 ### 快速部署 (PM2)
 
+**启动服务**
 ```bash
 npm install -g pm2
 pm2 start server.js --name love-letter
 pm2 save
 pm2 startup
+```
+
+**停止服务**
+```bash
+# 停止单个服务
+pm2 stop love-letter
+
+# 停止所有服务
+pm2 stop all
+
+# 停止并删除服务（从 PM2 列表中移除）
+pm2 delete love-letter
+
+# 删除所有服务
+pm2 delete all
+```
+
+**常用命令**
+```bash
+pm2 list              # 查看所有服务状态
+pm2 logs love-letter  # 查看日志
+pm2 restart love-letter  # 重启服务
 ```
 
 ### Docker 部署
